@@ -3,11 +3,12 @@ const { connection } = require("../config/dbConfig");
 async function insertUser(userDetails){
     console.log("Hitting customerRepo -> insertUser fn");
 
-    const { name, email, mobileNumber, selectDate, serviceType } = userDetails;
+    const { name, email, mobileNumber, serviceType } = userDetails;
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO customer_info (full_name, email_id, mobile_number, select_date, service_type) VALUES (?, ?, ?, ?, ?)';
-        connection.query(sql, [name, email, mobileNumber, selectDate, serviceType], (err, result) => {
+        const sql = 'INSERT INTO customer_info (full_name, email_id, mobile_number, service_type) VALUES (?, ?, ?, ?)';
+        connection.query(sql, [name, email, mobileNumber, serviceType], (err, result) => {
             if (err) {
+                console.log("Error in inserting user");
                 return reject(err);
             } else {
                 return resolve({
@@ -15,7 +16,6 @@ async function insertUser(userDetails){
                     name,
                     email,
                     mobileNumber,
-                    selectDate,
                     serviceType,
                     
                 });

@@ -1,4 +1,5 @@
 const { createCustomer } = require("../services/customerServices");
+const AppError = require("../utils/appError");
 
 async function addCustomer(req, res){
     try {
@@ -7,11 +8,8 @@ async function addCustomer(req, res){
             name: req.body.full_name,
             email: req.body.email_id,
             mobileNumber: req.body.mobile_number,
-            selectDate: req.body.select_date,
             serviceType: req.body.service_type
         });
-
-
         return res.status(201).json({
             message: 'Successfully registered the user.',
             success: true,
@@ -20,7 +18,20 @@ async function addCustomer(req, res){
         });
     } catch (error) {
         console.log("Customer not created!");
-        console.log(error);
+        if(error instanceof AppError) {
+            return res.status(error.statusCode).json({
+                success: false,
+                message: error.message,
+                data: {},
+                error: error
+            });
+        }
+        return res.json({
+            success: false,
+            message: error.message,
+            data: {},
+            error: error
+        });
     }
 }
 
