@@ -5,7 +5,7 @@ async function insertUser(userDetails){
 
     const { name, email, mobileNumber, serviceType } = userDetails;
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO customer_info (full_name, email_id, mobile_number, service_type) VALUES (?, ?, ?, ?)';
+        const sql = 'INSERT INTO customers (full_name, email_id, mobile_number, service_type) VALUES (?, ?, ?, ?)';
         connection.query(sql, [name, email, mobileNumber, serviceType], (err, result) => {
             if (err) {
                 console.log("Error in inserting user");

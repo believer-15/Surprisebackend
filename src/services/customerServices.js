@@ -7,6 +7,7 @@ async function createCustomer(customerDetails){
     const name = customerDetails.name;
     const mobile = customerDetails.mobileNumber;
     const email = customerDetails.email;
+    console.log(name);
 
     if(!name && !mobile){
         throw new Error("Name and Mobile Number are required!");
