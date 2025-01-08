@@ -3,8 +3,13 @@ const express = require('express');
 const serverConfig = require('./config/serverConfig');
 const {connectDB} = require('./config/dbConfig');
 const userRouter = require('./routes/customerRoute');
+const cors = require('cors');
 
 const app = express();
+
+app.use(cors({
+    origin: 'http://localhost:5173' // restrict calls to those this address
+}));
 
 app.use(express.urlencoded({ extended: true })); // For x-www-form-urlencoded
 app.use(express.json());
