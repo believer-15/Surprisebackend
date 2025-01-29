@@ -8,7 +8,7 @@ async function insertUser(userDetails){
         const sql = 'INSERT INTO customers (full_name, email_id, mobile_number, service_type) VALUES (?, ?, ?, ?)';
         connection.query(sql, [name, email, mobileNumber, serviceType], (err, result) => {
             if (err) {
-                console.log("Error in inserting user");
+                console.log("Error in inserting user", err);
                 return reject(err);
             } else {
                 return resolve({
