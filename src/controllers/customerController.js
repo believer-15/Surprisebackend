@@ -10,8 +10,9 @@ async function addCustomer(req, res){
             mobileNumber: req.body.mobile_number,
             serviceType: req.body.service_type
         });
-        return res.status(201).json({
+        return res.json({
             message: 'Successfully registered the user.',
+            status: 201,
             success: true,
             data: customer,
             error: {}

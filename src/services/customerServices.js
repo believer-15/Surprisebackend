@@ -65,7 +65,7 @@ function validateMobile(input){
 }
 function validateEmail(input){
 
-    // console.log("Hitting validateEmail fn");
+    console.log("Hitting validateEmail fn");
 
     input = input.trim();
 
