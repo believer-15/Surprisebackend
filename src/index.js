@@ -8,7 +8,7 @@ const cors = require('cors');
 const app = express();
 
 app.use(cors({
-    origin: 'https://surprise-frontend.vercel.app' // restrict calls to those this address
+    origin: 'https://newsurprise.vercel.app' // restrict calls to those this address
 }));
 
 app.use(express.urlencoded({ extended: true })); // For x-www-form-urlencoded
