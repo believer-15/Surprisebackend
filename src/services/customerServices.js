@@ -1,13 +1,15 @@
 const { insertUser } = require("../repositories/customerRepo");
 const AppError = require("../utils/appError");
+const sanitize = require("sanitize-html");
 
 async function createCustomer(customerDetails){
     console.log("Hitting customerService -> createCustomer fn");
 
-    const name = customerDetails.name;
-    const mobile = customerDetails.mobileNumber;
-    const email = customerDetails.email;
-    console.log(name);
+    const name = customerDetails.name?.trim();
+    const mobile = customerDetails.mobileNumber?.trim();
+    const email = customerDetails.email?.trim();
+    const serviceType =customerDetails.serviceType?.trim();
+    // console.log(name);
 
     if(!name && !mobile){
         throw new Error("Name and Mobile Number are required!");
@@ -19,26 +21,32 @@ async function createCustomer(customerDetails){
     if(typeof name !== 'string' && typeof mobile !== 'string'){
         // console.log(typeof name);
         throw new Error("Enter Valid Input!");
-    }    
-
-    validateName(name);
-    validateMobile(mobile);
-    // validateEmail(email);
-    if(email){
-        validateEmail(email);
+    }  
+    
+    const DataSanitized = {
+        sanitizeName: sanitize(name),
+        sanitizeEmail: sanitize(email),
+        sanitizeMobile: sanitize(mobile),
+        sanitizeServiceType: sanitize(serviceType)
     }
     
+    // ✅ Validate Input
+    validateName(DataSanitized.sanitizeName);
+    validateMobile(DataSanitized.sanitizeMobile);
+    if (DataSanitized.sanitizeEmail) {
+        validateEmail(DataSanitized.sanitizeEmail);
+    }
 
-    const customer = await insertUser(customerDetails);
-
-    return customer;
-
+    // ✅ Insert into DB
+    const customer = await insertUser(DataSanitized);
+    return customer
 }
+
 function validateName(input){
 
     // console.log("Hitting validateName fn");
 
-    input = input.trim().split(" ").filter(word => word !== "").join(" ");
+    input = input.split(" ").filter(word => word !== "").join(" ");
 
     const nameRegex = /^[A-Za-z ]+$/;
 
@@ -53,10 +61,8 @@ function validateMobile(input){
     
     const mobileRegex = /^[6-9]\d{9}$/; 
 
-    if(typeof input === "string"){
-        if (typeof input !== "string" || isNaN(Number(input))) {
-            throw new Error("Enter Valid Mobile Number!");
-        }
+    if (isNaN(Number(input))) {
+        throw new Error("Enter Valid Mobile Number!");
     }
 
     if(!mobileRegex.test(input)){
