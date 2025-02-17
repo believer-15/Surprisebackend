@@ -24,22 +24,23 @@ async function createCustomer(customerDetails){
     }  
     
     const DataSanitized = {
-        sanitizeName: sanitize(name),
-        sanitizeEmail: sanitize(email),
-        sanitizeMobile: sanitize(mobile),
-        sanitizeServiceType: sanitize(serviceType)
+        full_name: sanitize(name),
+        email_id: sanitize(email),
+        mobile_number: sanitize(mobile),
+        service_type: sanitize(serviceType)
     }
     
     // ✅ Validate Input
-    validateName(DataSanitized.sanitizeName);
-    validateMobile(DataSanitized.sanitizeMobile);
-    if (DataSanitized.sanitizeEmail) {
-        validateEmail(DataSanitized.sanitizeEmail);
+    validateName(DataSanitized.full_name);
+    validateMobile(DataSanitized.mobile_number);
+    if (DataSanitized.email_id) {
+        validateEmail(DataSanitized.email_id);
     }
 
     // ✅ Insert into DB
     const customer = await insertUser(DataSanitized);
-    return customer
+
+    return customer;
 }
 
 function validateName(input){
@@ -48,7 +49,7 @@ function validateName(input){
 
     input = input.split(" ").filter(word => word !== "").join(" ");
 
-    const nameRegex = /^[A-Za-z ]+$/;
+    const nameRegex = /^[A-Za-z]+([ '-][A-Za-z]+)*$/;
 
     if(!nameRegex.test(input)){
         throw new Error("Enter Valid Name!");
