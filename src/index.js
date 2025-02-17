@@ -9,7 +9,7 @@ const Customer = require('./schema/customerSchema');
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:5173' // restrict calls to those this address
+    origin: 'https://newsurprise.vercel.app' // restrict calls to those this address
 }));
 
 app.use(express.urlencoded({ extended: true })); // For x-www-form-urlencoded

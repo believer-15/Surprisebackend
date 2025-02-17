@@ -1,6 +1,8 @@
 const { insertUser } = require("../repositories/customerRepo");
 const AppError = require("../utils/appError");
 const sanitize = require("sanitize-html");
+const sendEmailNotification = require("../notificationservices/emailService");
+
 
 async function createCustomer(customerDetails){
     console.log("Hitting customerService -> createCustomer fn");
@@ -39,6 +41,9 @@ async function createCustomer(customerDetails){
 
     // ✅ Insert into DB
     const customer = await insertUser(DataSanitized);
+
+    // Send Email Notification
+    const mailSender = await sendEmailNotification(`sinha02priti@gmail.com`, "Registration Successful", `Hello ${customer.full_name}, your data has been saved successfully!`, "<b>Hello world?</b>");
 
     return customer;
 }
